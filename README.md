@@ -1,2 +1,2 @@
-# lost-coins
+# Rags to Riches
 Eksamens projekt. 
