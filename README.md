@@ -1,0 +1,2 @@
+# lost-coins
+Eksamens projekt. 
