@@ -2,7 +2,7 @@ let characterX = 50
 let characterY = 480
 let speed = 5
 let hastighedY = 0
-let gravity = 1
+let gravity = 0.2
 let isHop = false
 
 function setup() {
@@ -15,6 +15,7 @@ background(135,206,235)
 fill(255,176,39)
 ellipse(589, 10, 150, 150)
 
+characterY += hastighedY
 if (characterY < 480){
 	hastighedY += gravity
 } else {
@@ -23,7 +24,7 @@ if (characterY < 480){
 	isHop = false
 }
 
-characterY += hastighedY
+
 
 keyPressed()
 character()
@@ -36,9 +37,16 @@ function character() {
 }
 
 function keyPressed() {
-if (keyIsDown(87)){characterY--}
-if (keyIsDown(65)){characterX--}
-if (keyIsDown(68)){characterX++}
+if (keyIsDown(32) && !isHop) {
+	hastighedY = -12
+	isHop = true
+}
+
+
+if (keyIsDown(65)){characterX -=speed}
+
+if (keyIsDown(68)){characterX +=speed}
+
 
 }
 
