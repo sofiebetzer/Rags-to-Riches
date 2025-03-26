@@ -1,4 +1,4 @@
-let characterX = 50
+let characterX = 10
 let characterY = 515
 let speed = 5
 let hastighedY = 0
@@ -13,6 +13,7 @@ function setup() {
 
 function draw(){
 background(135,206,235) 
+
 
 fill(255,176,39)
 ellipse(589, 10, 150, 150)
@@ -29,13 +30,22 @@ if (characterY < 515){
 
 keyPressed()
 character()
+platform()
 
+}
 
+function platform(){
+  let leftWall = 200;
+  let rightWall = 300
+  line(leftWall, 10, leftWall, 500);
+  line(rightWall, 10, rightWall, 500)
+	
+  let character= constrain(characterX,leftWall,rightWall)
 }
 
 function character() {
 	fill(205,176,39)
-	rect(characterX, characterY, 60, 80)
+	rect(characterX, characterY, 60, 70)
 }
 
 function keyPressed() {
