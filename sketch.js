@@ -4,7 +4,9 @@ let speed = 5
 let hastighedY = 0
 let gravity = 0.2
 let isHop = false
+let hop = 0
 let coinCollected = false
+let score = 0
 let coins = [
 	{x:250, y:400, collected: false},
 	{x:320, y:400, collected: false},
@@ -12,7 +14,6 @@ let coins = [
 	{x:900, y:515, collected: false},
 	{x:1200, y:450, collected: false}	
 ]
-let score = 0
 
 function setup() {
 	createCanvas(1475, 600)
@@ -28,7 +29,10 @@ text("score: " + score,20,40)
 fill(255,176,39)
 ellipse(589, 10, 150, 150)
 
+
 characterY += hastighedY
+hop += 0.2
+console.log(hastighedY)
 if (characterY < 515){
 	hastighedY += gravity
 } else {
@@ -52,21 +56,30 @@ for (let i = 0; i < coins.length; i++){
 	}
 }
 
+rect(200,450,400,20)
 
-platform()
-keyPressed()
 character()
+keyPressed()
 coin()
 
+
+
+if(characterX<600&&characterX>200-60){
+	if(characterY+60>450&&characterY+60<470){
+		square(0,0,20)
+		characterY = 390
+		characterY -= hastighedY
+		hastighedY = 0
+		isHop = false
+	}
 }
 
-function platform(){
-	rect(200,450,400,20)
 }
+
 
 function character() {
 	fill(205,176,39)
-	rect(characterX, characterY, 60, 70)
+	rect(characterX, characterY, 60, 60)
 }
 
 function coin(){
@@ -82,6 +95,7 @@ function coin(){
 function keyPressed() {
 if (keyIsDown(32) && !isHop) {
 	hastighedY = -12
+	hop = -12
 	isHop = true
 }
 
