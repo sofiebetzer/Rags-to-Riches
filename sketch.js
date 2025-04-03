@@ -1,8 +1,12 @@
+let fattig
+let flip
+let city
+let money
 let characterX = 10
 let characterY = 515
 let speed = 5
 let hastighedY = 0
-let gravity = 0.2
+let gravity = 0.32
 let isHop = false
 let hop = 0
 let coinCollected = false
@@ -12,22 +16,29 @@ let coins = [
 	{x:320, y:400, collected: false},
 	{x:600, y:300, collected: false},
 	{x:900, y:515, collected: false},
-	{x:1200, y:450, collected: false}	
+	{x:1200, y:450, collected: false},
+	{x:400, y:380, collected: false},	
 ]
+
+function preload(){
+	fattig = loadImage("Fattig1.png")
+	city = loadImage("BY.jpg")
+	flip = loadImage("Fattig-flip.PNG")
+	money = loadImage("Money.png")
+}
 
 function setup() {
 	createCanvas(1475, 600)
 }
 
 function draw(){
-background(135,206,235) 
+image(city,0,0,1475,600) 
 
 fill(0)
 textSize(24)
 text("score: " + score,20,40)
 
-fill(255,176,39)
-ellipse(589, 10, 150, 150)
+
 
 
 characterY += hastighedY
@@ -55,8 +66,9 @@ for (let i = 0; i < coins.length; i++){
 		}
 	}
 }
-
+fill(150,75,0)
 rect(200,450,400,20)
+
 
 character()
 keyPressed()
@@ -72,29 +84,33 @@ if(characterX + 60 > 200 && characterX < 600
 	hastighedY = 0
 	isHop = false
 	}
+
 }
 
 
-
 function character() {
-	fill(205,176,39)
-	rect(characterX, characterY, 60, 60)
+	
+
+	if (keyIsDown(68)){
+	image(fattig, characterX, characterY, 90, 60)} 
+	else if (keyIsDown(65)){ image(flip,characterX,characterY,90,60)
+	} else { image(fattig, characterX, characterY, 90, 60)
+	}
 }
 
 function coin(){
 	for (let i = 0; i < coins.length; i++){
 		let c = coins[i]
 		if(!c.collected){
-			fill(255,223,0)
-			ellipse(c.x, c.y, 20, 20)
+			image(money,c.x, c.y, 20, 20)
 		}
 	}
 }
 
 function keyPressed() {
 if (keyIsDown(32) && !isHop) {
-	hastighedY = -12
-	hop = -12
+	hastighedY = -10
+	hop = -1
 	isHop = true
 }
 
