@@ -64,17 +64,16 @@ coin()
 
 
 
-if(characterX<600&&characterX>200-60){
-	if(characterY+60>450&&characterY+60<470){
-		square(0,0,20)
-		characterY = 390
-		characterY -= hastighedY
-		hastighedY = 0
-		isHop = false
+if(characterX + 60 > 200 && characterX < 600
+	&& characterY + 60 > 450 && characterY + 60 < 470 &&
+	hastighedY >= 0
+){
+	characterY = 450 - 60
+	hastighedY = 0
+	isHop = false
 	}
 }
 
-}
 
 
 function character() {
