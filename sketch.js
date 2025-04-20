@@ -2,6 +2,7 @@ let fattig
 let flip
 let city
 let money
+let bjerg
 let characterX = 10
 let characterY = 515
 let speed = 5
@@ -9,6 +10,7 @@ let hastighedY = 0
 let gravity = 0.30
 let isHop = false
 let hop = 0
+let gameState = "start"
 let coinCollected = false
 let score = 0
 let coins = [
@@ -25,6 +27,7 @@ function preload(){
 	city = loadImage("BY.jpg")
 	flip = loadImage("Fattig-flip.PNG")
 	money = loadImage("Coin.png")
+	bjerg = loadImage("Mountain.jpg")
 }
 
 function setup() {
@@ -32,6 +35,23 @@ function setup() {
 }
 
 function draw(){
+if (gameState === "start"){
+	startScreen()
+} else if (gameState === "play"){
+	playGame()
+}
+}
+
+function startScreen(){
+	image(bjerg,0,0,1475,600)
+	textSize(50)
+	textAlign(CENTER)
+	text("Welcome to Rags to Riches", width/2, height/2 - 50)
+	textSize(24)
+	text("Press ENTER to start the game", width/2, height/2 + 50)
+}
+
+function playGame(){
 image(city,0,0,1475,600) 
 
 fill(255,255,255)
@@ -43,7 +63,7 @@ text("score: " + score,20,40)
 
 characterY += hastighedY
 hop += 0.2
-console.log(hastighedY)
+
 if (characterY < 515){
 	hastighedY += gravity
 } else {
@@ -72,7 +92,7 @@ rect(200,450,400,20)
 rect(800,350,400,20)
 
 character()
-keyPressed()
+AD()
 coin()
 
 
@@ -86,17 +106,15 @@ if(characterX + 60 > 200 && characterX < 560
 	isHop = false
 	}
 
-if(characterX + 60 > 800 && characterX < 1180
-	&& characterY + 60 > 350 && characterY + 60 < 470 &&
+if(characterX + 60 > 800 && characterX < 1170
+	&& characterY + 60 > 350 && characterY + 60 < 370 &&
 hastighedY >= 0){
 	characterY = 350 - 60
 	hastighedY = 0
 	isHop = false
 }
 
-
 }
-
 
 function character() {
 	if (keyIsDown(68)){
@@ -115,28 +133,34 @@ function coin(){
 	}
 }
 
+function AD(){
+	if (keyIsDown(65)){
+		if (characterX - speed >= 0) {
+			characterX -= speed
+		} else {
+			characterX = 0
+		}
+	
+	}
+	
+	if (keyIsDown(68)){
+		if (characterX + speed <= width - 60){ 
+			characterX += speed
+		} else {
+			characterX = width - 60
+		}
+	}
+}
+
 function keyPressed() {
-if (keyIsDown(32) && !isHop) {
-	hastighedY = -10
-	hop = -1
-	isHop = true
-}
-
-if (keyIsDown(65)){
-	if (characterX - speed >= 0) {
-		characterX -= speed
-	} else {
-		characterX = 0
+	if (gameState === "start" && keyCode === 13 ){
+		gameState = "play"
 	}
-
-}
-
-if (keyIsDown(68)){
-	if (characterX + speed <= width - 60){ 
-		characterX += speed
-	} else {
-		characterX = width - 60
+	if (gameState === "play"){
+		if (keyCode === 32 && !isHop){
+			hastighedY = -10
+			hop = -1
+			isHop = true
+		}
 	}
-}
-
 }
