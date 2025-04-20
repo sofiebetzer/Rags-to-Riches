@@ -152,6 +152,7 @@ function AD(){
 	}
 }
 
+
 function keyPressed() {
 	if (gameState === "start" && keyCode === 13 ){
 		gameState = "play"
