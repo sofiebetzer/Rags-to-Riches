@@ -112,19 +112,19 @@ if (characterY < 515){
 	isHop = false
 }
 
-let allCollected = true
-for (let i = 0; i < coins.length; i++){
-	let c = coins[i]
-	if (!c.collected){
+let allCollected = true // til starter siger den at alle mønter er samlet op.
+for (let i = 0; i < coins.length; i++){ //går igennem alle mønterr i coins-array.
+	let c = coins[i] // laver en konstant som er = den aktuelle mønt i arrayet.
+	if (!c.collected){ // hvis denn mønt ikker er samlet endu, så er all collected false fordi den mønt mangler.
 		allCollected = false  
-		if(
-			characterX < c.x + 20 &&
-			characterX + 60 > c.x &&
-			characterY < c.y + 20 &&
-			characterY + 70 > c.y
+		if( //Character kollision tjek
+			characterX < c.x + 20 && //Tjekker om characteren er til venstre for møntens højre kant
+			characterX + 60 > c.x && //Tjekker om characteren er til højre for møntens venstre kant
+			characterY < c.y + 20 && //Tjekker om characteren er over møntens bund
+			characterY + 70 > c.y    //Tjekker om characteren er under møntens top
 		){
-			c.collected = true
-			score += 1
+			c.collected = true // Markerer at mønten er samlet op
+			score += 1         // pointtælleren øges med 1 pr opsamlet mønt.
 		}
 	}
 }
@@ -233,11 +233,11 @@ function character() {
 	}
 }
 
-function coin(){
+function coin(){// Går igennem alle mønter i arrayet
 	for (let i = 0; i < coins.length; i++){
-		let c = coins[i]
-		if(!c.collected){
-			image(money,c.x, c.y, 20, 20)
+		let c = coins[i] //tag den aktuelle mønt
+		if(!c.collected){ //Hvis mønten ikke er samlet op endu
+			image(money,c.x, c.y, 20, 20) //tegn møntens billede på c.x og c.y kordinaterne 20x20 pixels
 		}
 	}
 }
