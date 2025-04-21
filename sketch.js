@@ -1,6 +1,7 @@
 let fattig
 let flip
 let city
+let city2
 let money
 let bjerg
 let characterX = 10
@@ -13,6 +14,9 @@ let hop = 0
 let gameState = "start"
 let coinCollected = false
 let score = 0
+let level = 1
+let levelMessage = ""
+let levelCompleted = false
 let coins = [
 	{x:250, y:400, collected: false},
 	{x:320, y:400, collected: false},
@@ -21,10 +25,17 @@ let coins = [
 	{x:1200, y:450, collected: false},
 	{x:400, y:380, collected: false},	
 ]
+let level2platforms = [
+	{x:150, y: 480, width: 300, height: 20},
+	{x: 500, y: 400, width: 300, height: 20},
+	{x:900, y: 320, width: 300, height: 20},
+	{x:300, y: 250, width: 300, height: 20},
+]
 
 function preload(){
 	fattig = loadImage("Fattig1.png")
-	city = loadImage("BY.jpg")
+	city2 = loadImage("BY.jpg")
+	city = loadImage("Hobo.jpeg")
 	flip = loadImage("Fattig-flip.PNG")
 	money = loadImage("Coin.png")
 	bjerg = loadImage("Mountain.jpg")
@@ -39,6 +50,12 @@ if (gameState === "start"){
 	startScreen()
 } else if (gameState === "play"){
 	playGame()
+} else if (gameState === "levelComplete"){
+	levelCompleteScreen()
+} else if (gameState === "level2"){ 
+	playLevel2()
+} else if (gameState === "gameComplete"){
+	gameCompleteScreen()  
 }
 }
 
@@ -51,14 +68,37 @@ function startScreen(){
 	text("Press ENTER to start the game", width/2, height/2 + 50)
 }
 
+function levelCompleteScreen(){
+	image(city,0,0,1475,600)
+	
+	fill(255,255,255)
+	textSize(32)
+
+	textAlign(CENTER)
+	text("Level 1 Complete", width/2, height/2 - 50)
+	textSize(24)
+	text("Press ENTER for level 2", width/2, height/2 + 20)
+}
+
+function gameCompleteScreen(){
+	image(city2,0,0,1475,600)
+
+	fill(255,255,255)
+	textSize(32)
+	textAlign(CENTER)
+	text("Game Complete, You Win!!", width/2, height/2 -20)
+	textSize(24)
+	text("THANKS for playing", width/2, height/2 + 20)
+}
+
 function playGame(){
 image(city,0,0,1475,600) 
 
 fill(255,255,255)
 textSize(24)
+textAlign(LEFT)
 text("score: " + score,20,40)
-
-
+text("level:"+ level, 20,70)  
 
 
 characterY += hastighedY
@@ -72,10 +112,11 @@ if (characterY < 515){
 	isHop = false
 }
 
-
+let allCollected = true
 for (let i = 0; i < coins.length; i++){
 	let c = coins[i]
 	if (!c.collected){
+		allCollected = false  
 		if(
 			characterX < c.x + 20 &&
 			characterX + 60 > c.x &&
@@ -87,6 +128,11 @@ for (let i = 0; i < coins.length; i++){
 		}
 	}
 }
+
+if (allCollected && level === 1){
+	gameState = "levelComplete"
+}
+
 fill(150,75,0)
 rect(200,450,400,20)
 rect(800,350,400,20)
@@ -115,6 +161,69 @@ hastighedY >= 0){
 }
 
 }
+
+function playLevel2(){
+	image(city2,0,0,1475,600)  
+
+	fill(255,255,255)
+	textSize(24)
+	textAlign(LEFT)
+	text("score: " + score, 20,40)
+	text("level: " + level, 20,70) 
+	
+	characterY += hastighedY 
+	hop += 0.2
+
+	if (characterY < 515){
+		hastighedY += gravity
+	} else {
+		characterY = 515
+		hastighedY = 0
+		isHop = false
+	}
+
+	let allCollected = true
+	for (let i = 0; i < coins.length; i++){
+		let c = coins[i]
+		if(!c.collected){
+			allCollected = false  
+			if( characterX < c.x + 20 &&
+				characterX + 60 > c.x &&
+				characterY < c.y +20 &&
+				characterY + 70 > c.y
+			){
+				c.collected = true
+				score += 1
+			}
+		}
+	}
+
+	if(allCollected && level === 2){
+		gameState = "gameComplete"
+	}
+
+	fill(150,75,0)
+	for(let platform of level2platforms){
+		rect(platform.x, platform.y, platform.width, platform.height)
+	}
+	
+	character() 
+	AD()
+	coin()
+
+	for (let platform of level2platforms){
+		if( characterX + 60 > platform.x &&  
+			characterX < platform.x + platform.width &&
+			characterY + 60 > platform.y &&
+			characterY + 60 < platform.y + 20 &&
+			hastighedY >= 0
+		){
+			characterY = platform.y - 60
+			hastighedY = 0
+			isHop = false
+		}
+	}
+}  
 
 function character() {
 	if (keyIsDown(68)){
@@ -152,12 +261,33 @@ function AD(){
 	}
 }
 
+function startLevel2(){
+	level = 2
+	gameState = "level2"  
+	score = 0
+	characterX = 10
+	characterY = 515
+
+	coins = [
+		{x: 200, y: 430, collected: false},
+		{x: 550, y: 350, collected: false},
+		{x: 950, y: 270, collected: false},
+		{x: 350, y: 200, collected: false},
+		{x: 1200, y: 450, collected: false},
+		{x: 700, y: 320, collected: false},
+	]
+}
+
 
 function keyPressed() {
 	if (gameState === "start" && keyCode === 13 ){
 		gameState = "play"
 	}
-	if (gameState === "play"){
+	else if (gameState === "levelComplete" && keyCode === 13){
+		startLevel2()
+	}
+
+	if (gameState === "play" || gameState === "level2"){  
 		if (keyCode === 32 && !isHop){
 			hastighedY = -10
 			hop = -1
