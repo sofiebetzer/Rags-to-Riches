@@ -66,6 +66,7 @@ function startScreen(){
 	text("Welcome to Rags to Riches", width/2, height/2 - 50)
 	textSize(24)
 	text("Press ENTER to start the game", width/2, height/2 + 50)
+	text("Use A and D to move, SPACE to Jump", width/2, height/2 + 10)
 }
 
 function levelCompleteScreen(){
