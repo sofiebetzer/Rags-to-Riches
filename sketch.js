@@ -131,6 +131,10 @@ for (let i = 0; i < coins.length; i++){ //går igennem alle mønterr i coins-arr
 	}
 }
 
+
+
+
+
 if (allCollected && level === 1){
 	gameState = "levelComplete"
 }
