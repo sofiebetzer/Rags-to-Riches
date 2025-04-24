@@ -26,8 +26,8 @@ let coins = [
 	{x:400, y:380, collected: false},	
 ]
 let level2platforms = [
-	{x:150, y: 480, width: 300, height: 20},
-	{x: 500, y: 400, width: 300, height: 20},
+	{x:150, y: 480, width: 300 , height: 20},
+	{x:500, y: 400, width: 300, height: 20},
 	{x:900, y: 320, width: 300, height: 20},
 	{x:300, y: 250, width: 300, height: 20},
 ]
@@ -90,6 +90,7 @@ function gameCompleteScreen(){
 	text("Game Complete, You Win!!", width/2, height/2 -20)
 	textSize(24)
 	text("THANKS for playing", width/2, height/2 + 20)
+	text("Press R to restart", width/2, height/2 + 60)
 }
 
 function playGame(){
@@ -230,8 +231,7 @@ function character() {
 	if (keyIsDown(68)){
 	image(fattig, characterX, characterY, 90, 60)} 
 	else if (keyIsDown(65)){ image(flip,characterX,characterY,90,60)
-	} else { image(fattig, characterX, characterY, 90, 60)
-	}
+	} else { image(fattig, characterX, characterY, 90, 60) }
 }
 
 function coin(){// Går igennem alle mønter i arrayet
@@ -249,7 +249,7 @@ function AD(){
 			characterX -= speed
 		} else {
 			characterX = 0
-		}
+		}	
 	
 	}
 	
@@ -279,6 +279,25 @@ function startLevel2(){
 	]
 }
 
+function resetGame() {
+	gameState = "start"
+	level = 1
+	score = 0
+	characterX = 10
+	characterY = 515
+	hastighedY = 0
+	isHop = false
+
+	coins = [
+		{x:250, y:400, collected: false},
+		{x:320, y:400, collected: false},
+		{x:600, y:300, collected: false},
+		{x:900, y:215, collected: false},
+		{x:1200, y:450, collected: false},
+		{x:400, y:380, collected: false},	
+	]
+}
+
 
 function keyPressed() {
 	if (gameState === "start" && keyCode === 13 ){
@@ -294,5 +313,9 @@ function keyPressed() {
 			hop = -1
 			isHop = true
 		}
+	}
+
+	if (keyCode === 82){
+		resetGame()
 	}
 }
